@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
  */
 public class Categories {
 
-	public static File categoriesFile;
 	
 	/**
 	 * add a category into 'category/categories.txt' file
@@ -29,7 +28,12 @@ public class Categories {
 	 * @param category - String name of the category to add
 	 * @throws IOException
 	 */
-	public static void addCategory(String category) {
+	public static boolean addCategory(String category) {
+		File categoriesFile = new File(PropertiesAccess.getInstance().getLocalRepository()
+				+ File.separator 
+				+ "category" 
+				+ File.separator 
+				+ "categories.txt");
 		try {	
 			List<String> categoriesList = getCategories();
 			if (!categoriesList.contains(category.toLowerCase())) {
@@ -37,10 +41,12 @@ public class Categories {
 				writer.append(category.toLowerCase());
 				writer.newLine();
 				writer.close();
+				return true;
 			}
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
 	
 	/** Method used to remove a category of the categories text file
@@ -49,6 +55,11 @@ public class Categories {
 	 * @throws IOException 
 	 */
 	public static void removeCategory(String category) {
+		File categoriesFile = new File(PropertiesAccess.getInstance().getLocalRepository()
+				+ File.separator 
+				+ "category" 
+				+ File.separator 
+				+ "categories.txt");
 		try {
 			List<String> out = Files.lines(categoriesFile.toPath())
 					.filter(line -> !line.contains(category))
@@ -64,6 +75,11 @@ public class Categories {
 	 * 		categoryList - List<String> containing each category from categories.txt file
 	 */
 	public static List<String> getCategories() {
+		File categoriesFile = new File(PropertiesAccess.getInstance().getLocalRepository()
+				+ File.separator 
+				+ "category"
+				+ File.separator 
+				+ "categories.txt");
 		List<String> categoryList = new ArrayList<>();
 		try {
 			if (!categoriesFile.exists()) {
