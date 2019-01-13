@@ -39,8 +39,8 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -53,11 +53,9 @@ import com.acdc.cnoyel.Tools;
 import com.acdc.component.UserInputAddCategory;
 import com.acdc.component.DialogInvalidForm;
 import com.acdc.component.DialogValidateDemo;
-import com.acdc.component.DialogWaitingScreen;
 import com.acdc.component.UserDeleteCategory;
 import com.hexidec.ekit.EkitCore;
 import com.hexidec.ekit.EkitCoreSpell;
-import com.hexidec.ekit.component.JButtonNoFocus;
 
 /** Ekit
   * App for editing and saving HTML in a Java text component
@@ -299,7 +297,7 @@ public class Ekit extends JFrame implements WindowListener
 			else if(args[i].equals("-d"))     { debugOn = true; }
 			else if(args[i].equals("-D"))     { debugOn = false; }
 		}
-		Ekit ekit = new Ekit(sDocument, sStyleSheet, sRawDocument, urlStyleSheet, includeToolBar, includeViewSource, includeMenuIcons, modeExclusive, sLang, sCtry, base64, debugOn, spellCheck, multibar, enterBreak);
+		new Ekit(sDocument, sStyleSheet, sRawDocument, urlStyleSheet, includeToolBar, includeViewSource, includeMenuIcons, modeExclusive, sLang, sCtry, base64, debugOn, spellCheck, multibar, enterBreak);
 	}
 	
 	public JPanel createJPanelTitle() {
@@ -341,10 +339,10 @@ public class Ekit extends JFrame implements WindowListener
 		
 		jComboBoxCategory.setBorder(new EmptyBorder(0, 0, 0, 5));
 		
-		JButtonNoFocus jButtonNoFocusAddCategory = new JButtonNoFocus(new ImageIcon("./src/resources/add.png"));
+		JButton jButtonNoFocusAddCategory = new JButton(new ImageIcon(getClass().getClassLoader().getResource("add.png")));
 		jButtonNoFocusAddCategory.setBorder(new EmptyBorder(6, 6, 6, 6));
 		
-		JButtonNoFocus jButtonNoFocusRemoveCategory = new JButtonNoFocus(new ImageIcon("./src/resources/delete.png"));
+		JButton jButtonNoFocusRemoveCategory = new JButton(new ImageIcon(getClass().getClassLoader().getResource("delete.png")));
 		jButtonNoFocusRemoveCategory.setBorder(new EmptyBorder(6, 6, 6, 6));
 		
 		jPanelCategory.add(jLabelCategory);
@@ -388,8 +386,8 @@ public class Ekit extends JFrame implements WindowListener
 		return jPanelAuthor;
 	}
 	
-	public JButtonNoFocus createButtonSubmit() {
-		JButtonNoFocus jbtnSubmitForm = new JButtonNoFocus();
+	public JButton createButtonSubmit() {
+		JButton jbtnSubmitForm = new JButton();
 		jbtnSubmitForm.setText("VALIDER");
 		jbtnSubmitForm.setMinimumSize(new Dimension(getWidth(), 30));
 		

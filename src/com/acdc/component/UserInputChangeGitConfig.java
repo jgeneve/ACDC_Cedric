@@ -120,7 +120,7 @@ public class UserInputChangeGitConfig extends JDialog implements ActionListener
 	  	localRepoLabel.setBorder(new EmptyBorder(0, 5, 0, 10));
 	  	localRepoLabel.setPreferredSize(new Dimension(230, 25));
 	  	
-	  	JButtonNoFocus jButtonNoFocusEditLocalRepo = new JButtonNoFocus(new ImageIcon("./src/resources/edit.png"));  	
+	  	JButtonNoFocus jButtonNoFocusEditLocalRepo = new JButtonNoFocus(new ImageIcon(getClass().getClassLoader().getResource("edit.png")));  	
 	  	jButtonNoFocusEditLocalRepo.setActionCommand("edit_local");
 	  	jButtonNoFocusEditLocalRepo.addActionListener(this);
 	  	

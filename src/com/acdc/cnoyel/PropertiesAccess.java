@@ -18,6 +18,7 @@ import java.util.Properties;
 public class PropertiesAccess {
 	
 	private static PropertiesAccess SINGLETON = null;
+	private String propFileName = "config.properties";
 	
 	public static String LOCAL_REPOSITORY = "localRepository";
 
@@ -46,7 +47,6 @@ public class PropertiesAccess {
 	}
  
 	public ArrayList<String> getPropValues() {
-		String propFileName = "." + File.separator + "resources" + File.separator + "config.properties";
 		Properties prop = new Properties();
 		
 		try {
@@ -76,12 +76,13 @@ public class PropertiesAccess {
 	private void changePropertyValue(String key, String value) {
 		Properties props = new Properties();
 
-	    String propsFileName = "." + File.separator + "src" + File.separator + "resources" + File.separator + "config.properties";
+	    String propsFileName = "." + File.separator + "resources" + File.separator + "config.properties";
 	    try {
 	      //first load old one:
-	      FileInputStream configStream = new FileInputStream(propsFileName);
-	      props.load(configStream);
-	      configStream.close();
+	      inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+	      //FileInputStream configStream = new FileInputStream(propsFileName);
+	      props.load(inputStream);
+	      inputStream.close();
 
 	      //modifies existing or adds new property
 	      props.setProperty(key, value);
