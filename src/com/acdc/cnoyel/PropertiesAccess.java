@@ -75,8 +75,7 @@ public class PropertiesAccess {
 	
 	private void changePropertyValue(String key, String value) {
 		Properties props = new Properties();
-
-	    String propsFileName = "." + File.separator + "resources" + File.separator + "config.properties";
+		
 	    try {
 	      //first load old one:
 	      inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
@@ -88,7 +87,7 @@ public class PropertiesAccess {
 	      props.setProperty(key, value);
 
 	      //save modified property file
-	      FileOutputStream output = new FileOutputStream(propsFileName);
+	      FileOutputStream output = new FileOutputStream(propFileName);
 	      props.store(output, null);
 	      output.close();
 	      
