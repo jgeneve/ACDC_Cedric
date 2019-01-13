@@ -77,7 +77,6 @@ public class DialogValidateDemo extends JDialog implements ActionListener
 		{
 			setVisible(false);
 			Tools.killJekyll();
-			//Tools.executeCmd("git checkout .", PropertiesAccess.getInstance().getLocalRepository());
 			Tools.executeCmd("git clean -f", PropertiesAccess.getInstance().getLocalRepository());
 		}
 	}
