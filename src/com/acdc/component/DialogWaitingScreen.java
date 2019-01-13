@@ -33,9 +33,9 @@ public class DialogWaitingScreen extends JDialog
 {
 	private String message;
 	
-	public DialogWaitingScreen(EkitCore peKit, String title, boolean bModal, String message)
+	public DialogWaitingScreen(EkitCore peKit, String title, String message, boolean bModal)
 	{		
-		super(peKit.getFrame(), title, true);
+		super(peKit.getFrame(), title, bModal);
 		this.message = message;
 		init();
 	}
@@ -45,7 +45,7 @@ public class DialogWaitingScreen extends JDialog
 	  	Container contentPane = getContentPane();
 	  	setBounds(100,100,400,300);
 	  	setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-	  	//setResizable(false);
+	  	setResizable(false);
 	  	
        	JLabel jLabelMessage = new JLabel(message);
        	jLabelMessage.setBorder(new EmptyBorder(20, 20, 20, 20));

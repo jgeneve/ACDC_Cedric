@@ -409,9 +409,7 @@ public class Ekit extends JFrame implements WindowListener
 					String markdownFilePath = gitDirectory + File.separator + "_posts" + File.separator + post.getMarkdownFileName();
 					
 					Tools.createMarkdownFile(post.toMarkdown(), markdownFilePath);
-					JDialog waitingScreen = new DialogWaitingScreen(ekitCore, "Lancement du serveur", false, "Lancement du serveur Jekyll en cours, veuillez patienter ...");
 					Tools.executeCmd("bundle exec jekyll serve -o", gitDirectory, true);
-					waitingScreen.dispose();
 					new DialogValidateDemo(ekitCore, "Validation de l'aperçu", true);
 				}
 			}

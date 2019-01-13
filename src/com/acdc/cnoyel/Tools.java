@@ -14,6 +14,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
+import javax.swing.JDialog;
+
+import com.acdc.component.DialogWaitingScreen;
+import com.hexidec.ekit.Ekit;
+
 public class Tools {
 
 	private static Process process;
@@ -96,7 +101,7 @@ public class Tools {
 	 * @param path - String of the path where the command should be executed
 	 * @param stopThread - Boolean used to know if we need to stop the process by ourself or not 
 	 */
-	public static void executeCmd(String commande, String path, boolean stopThread) {
+	public static void executeCmd(String commande, String path, boolean isDemo) {
 		final boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");	// To verify if the OS is windows or another
 		ProcessBuilder builder = new ProcessBuilder();
 		if (isWindows) {
@@ -106,13 +111,13 @@ public class Tools {
 		}
 		builder.directory(new File(path));
 		try {
-			Process process = builder.start();
-			StreamGobbler streamGobbler = new StreamGobbler(process.getInputStream(), System.out::println, process.getErrorStream());		
-			Executors.newSingleThreadExecutor().submit(streamGobbler);
-			TimeUnit.SECONDS.sleep(3);
-			if(!stopThread) {
-				int exitCode = process.waitFor();
-				assert exitCode == 0;
+			if(!isDemo) {
+				Process processCmd = builder.start();
+				StreamGobbler streamGobbler = new StreamGobbler(process.getInputStream(), System.out::println, process.getErrorStream());		
+				Executors.newSingleThreadExecutor().submit(streamGobbler);
+				processCmd.waitFor();
+			} else {
+				process = builder.start();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

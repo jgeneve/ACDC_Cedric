@@ -63,10 +63,11 @@ public class DialogValidateDemo extends JDialog implements ActionListener
    	{
 		if(e.getActionCommand().equals("accept"))
 		{
-			List<String> messages = new ArrayList<>();
-			messages.add("Fichier upload avec succès.");
 			Tools.gitCommitAndPush(PropertiesAccess.getInstance().getLocalRepository());
 			setVisible(false);
+			
+			List<String> messages = new ArrayList<>();
+			messages.add("Fichier upload avec succès.");
 			new DialogInvalidForm(peKit, "", true, messages);
 			Tools.killJekyll();
 		}	
@@ -74,6 +75,8 @@ public class DialogValidateDemo extends JDialog implements ActionListener
 		{
 			setVisible(false);
 			Tools.killJekyll();
+			//Tools.executeCmd("git checkout .", PropertiesAccess.getInstance().getLocalRepository());
+			Tools.executeCmd("git clean -f", PropertiesAccess.getInstance().getLocalRepository());
 		}
 	}
 
@@ -82,15 +85,19 @@ public class DialogValidateDemo extends JDialog implements ActionListener
 	  	Container contentPane = getContentPane();
 	  	contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 	  	setBounds(100,100,400,300);
-	  	setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+	  	setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+	  	setResizable(false);
 
 	  	JPanel centerPanel = new JPanel();
 	  	centerPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 	  	
-       	centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.X_AXIS));
-	  	JLabel categoryLabel = new JLabel("Voulez-vous valider l'aperçu et upload le nouveau fichier sur Git ?", SwingConstants.LEFT);
-	  	categoryLabel.setBorder(new EmptyBorder(0, 5, 0, 10));
-	  	centerPanel.add(categoryLabel);
+       	centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+	  	JLabel waitLabel = new JLabel("L'aperçu va s'afficher dans un instant, veuillez patienter ...", SwingConstants.LEFT);
+	  	waitLabel.setBorder(new EmptyBorder(0, 5, 0, 10));
+	  	JLabel validateLabel = new JLabel("Voulez-vous valider l'aperçu et upload le nouveau fichier sur Git ?", SwingConstants.LEFT);
+	  	validateLabel.setBorder(new EmptyBorder(0, 5, 0, 10));
+	  	centerPanel.add(waitLabel);
+	  	centerPanel.add(validateLabel);
 
 		JPanel buttonPanel= new JPanel();	  	
 //	  	buttonPanel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
