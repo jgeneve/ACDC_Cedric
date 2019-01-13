@@ -55,9 +55,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import java.util.regex.Pattern;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -103,6 +106,8 @@ import javax.swing.text.rtf.RTFEditorKit;
 import javax.swing.undo.UndoManager;
 import javax.swing.undo.CannotUndoException;
 
+import com.acdc.cnoyel.PropertiesAccess;
+import com.acdc.cnoyel.Tools;
 import com.acdc.component.UserInputChangeGitConfig;
 import com.hexidec.ekit.action.*;
 import com.hexidec.ekit.component.*;
@@ -3037,6 +3042,15 @@ public class EkitCore extends JPanel implements ActionListener, KeyListener, Foc
 			try
 			{
 				File whatImage = imgFileDialog.getImageFile();
+				String destination = PropertiesAccess.getInstance().getLocalRepository() + File.separator + "images-blog" + File.separator;
+				
+				String[] whatImageSplit = whatImage.getPath().split(Pattern.quote(File.separator));
+				destination = destination + whatImageSplit[whatImageSplit.length - 1];
+				
+				Tools.copyFile(whatImage.getPath(), destination);
+				
+				whatImage = new File("/blog/images-blog/" + whatImageSplit[whatImageSplit.length - 1]);
+				
 				if(whatImage != null)
 				{
 					imageChooserStartDir = whatImage.getParent().toString();

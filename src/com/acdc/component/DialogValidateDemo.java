@@ -24,6 +24,7 @@ package com.acdc.component;
 import com.acdc.cnoyel.Categories;
 import com.acdc.cnoyel.PropertiesAccess;
 import com.acdc.cnoyel.Tools;
+import com.hexidec.ekit.Ekit;
 import com.hexidec.ekit.EkitCore;
 import com.hexidec.ekit.component.JButtonNoFocus;
 
@@ -70,6 +71,7 @@ public class DialogValidateDemo extends JDialog implements ActionListener
 			messages.add("Fichier upload avec succès.");
 			new DialogInvalidForm(peKit, "", true, messages);
 			Tools.killJekyll();
+			Ekit.cleanInputs();
 		}	
 	  	if(e.getActionCommand().equals("cancel"))
 		{

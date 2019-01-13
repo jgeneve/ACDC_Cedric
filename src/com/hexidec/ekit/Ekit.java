@@ -72,10 +72,10 @@ import com.hexidec.ekit.component.JButtonNoFocus;
 
 public class Ekit extends JFrame implements WindowListener
 {
-	private EkitCore ekitCore;
+	private static EkitCore ekitCore;
 	
-	private JTextField jTextFieldTitle;
-	private JTextField jTextFieldAuthor;
+	private static JTextField jTextFieldTitle;
+	private static JTextField jTextFieldAuthor;
 	private static JComboBox<String> jComboBoxCategory;
 
 	private File currentFile = (File)null;
@@ -409,7 +409,7 @@ public class Ekit extends JFrame implements WindowListener
 					String markdownFilePath = gitDirectory + File.separator + "_posts" + File.separator + post.getMarkdownFileName();
 					
 					Tools.createMarkdownFile(post.toMarkdown(), markdownFilePath);
-					Tools.executeCmd("bundle exec jekyll serve -o", gitDirectory, true);
+					Tools.launchServer();
 					new DialogValidateDemo(ekitCore, "Validation de l'aperçu", true);
 				}
 			}
@@ -439,5 +439,11 @@ public class Ekit extends JFrame implements WindowListener
 	
 	public static JComboBox<String> getJComboBoxCategories() {
 		return jComboBoxCategory;
+	}
+	
+	public static void cleanInputs() {
+		jTextFieldTitle.setText("");
+		jTextFieldAuthor.setText("");
+		ekitCore.getTextPane().setText("");
 	}
 }

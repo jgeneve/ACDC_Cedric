@@ -8,11 +8,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.regex.Pattern;
 
 import javax.swing.JDialog;
 
@@ -101,7 +105,7 @@ public class Tools {
 	 * @param path - String of the path where the command should be executed
 	 * @param stopThread - Boolean used to know if we need to stop the process by ourself or not 
 	 */
-	public static void executeCmd(String commande, String path, boolean isDemo) {
+	public static void executeCmd(String commande, String path) {
 		final boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");	// To verify if the OS is windows or another
 		ProcessBuilder builder = new ProcessBuilder();
 		if (isWindows) {
@@ -110,29 +114,18 @@ public class Tools {
 			builder.command("sh", "-c", commande);
 		}
 		builder.directory(new File(path));
+		Process processCmd = null;
 		try {
-			if(!isDemo) {
-				Process processCmd = builder.start();
-				StreamGobbler streamGobbler = new StreamGobbler(process.getInputStream(), System.out::println, process.getErrorStream());		
-				Executors.newSingleThreadExecutor().submit(streamGobbler);
-				processCmd.waitFor();
-			} else {
-				process = builder.start();
-			}
+			processCmd = builder.start();
+			StreamGobbler streamGobbler = new StreamGobbler(processCmd.getInputStream(), System.out::println, processCmd.getErrorStream());		
+			Executors.newSingleThreadExecutor().submit(streamGobbler);
+			processCmd.waitFor(); 
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-}
-
-	/**
-	 * Method to execute in a new thread a given command on a given path
-	 * @param cmd - String of the command to execute
-	 * @param path - String of the path where to execute the command
-	 */
-	public static void executeCmd(String cmd, String path) {
-		executeCmd(cmd, path, false);
+		processCmd.destroy();
 	}
 	
 	public static void killJekyll() {
@@ -152,6 +145,42 @@ public class Tools {
 		Tools.executeCmd("git add .", localDirectory);
 		Tools.executeCmd("git commit -m \"Add markdown file\"", localDirectory);
 		Tools.executeCmd("git push", localDirectory);
-}
+	}
+	
+	public static void launchServer() {
+		boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
+		
+		ProcessBuilder builder = new ProcessBuilder();
+		if (isWindows) {
+			builder.command("cmd.exe", "/c", "bundle exec jekyll serve -o");
+		} else {
+			builder.command("sh", "-c", "bundle exec jekyll serve -o", ">&-");
+		}
+		builder.directory(new File(PropertiesAccess.getInstance().getLocalRepository()));
+		
+		try {
+			process = builder.start();
+			Thread launchWebsite = new Thread(new LaunchWebsite(process));
+			launchWebsite.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static String deAccent(String str) {
+	    String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD); 
+	    Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+	    return pattern.matcher(nfdNormalizedString).replaceAll("");
+	}
+	
+	public static void copyFile(String pSource, String pDestination) {
+		try {
+			Path source = Paths.get(pSource);
+			Path destination = Paths.get(pDestination);
+			Files.copy(source, destination);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
 

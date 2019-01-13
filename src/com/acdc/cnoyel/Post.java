@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.tools.Tool;
+
 /**
  * The class Post is used interact with a post(or news) that you want to create
  * @author Cedric NOYEL
@@ -18,7 +20,7 @@ public class Post {
 	private List<String> imgList = new ArrayList<>();
 
 	public Post(String title, String category, String author, String text, List<String> linkList, List<String> imgLinkList) {
-		this.title = title;
+		this.title = Tools.deAccent(title);
 		this.category = category;
 		this.author = author;
 		this.text = text;
@@ -31,7 +33,7 @@ public class Post {
 	}
 
 	public void setTitle(String title) {
-		this.title = title;
+		this.title = Tools.deAccent(title);
 	}
 
 	public String getText() {
