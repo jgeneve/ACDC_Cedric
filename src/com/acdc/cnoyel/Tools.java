@@ -118,8 +118,8 @@ public class Tools {
 		try {
 			processCmd = builder.start();
 			StreamGobbler streamGobbler = new StreamGobbler(processCmd.getInputStream(), System.out::println, processCmd.getErrorStream());		
-			Executors.newSingleThreadExecutor().submit(streamGobbler);
-			processCmd.waitFor(); 
+			Executors.newSingleThreadExecutor().submit(streamGobbler); 
+			processCmd.waitFor();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
@@ -144,7 +144,7 @@ public class Tools {
 	public static void gitCommitAndPush(String localDirectory) {
 		Tools.executeCmd("git add .", localDirectory);
 		Tools.executeCmd("git commit -m \"Add markdown file\"", localDirectory);
-		Tools.executeCmd("git push", localDirectory);
+		Tools.executeCmd("git push origin master", localDirectory);
 	}
 	
 	public static void launchServer() {
