@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -51,8 +53,8 @@ public class PropertiesAccess {
 		
 		try {
  
-			inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
- 
+			inputStream = new FileInputStream(propFileName);
+
 			if (inputStream != null) {
 				prop.load(inputStream);
 			} else {
@@ -78,8 +80,7 @@ public class PropertiesAccess {
 		
 	    try {
 	      //first load old one:
-	      inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
-	      //FileInputStream configStream = new FileInputStream(propsFileName);
+	      inputStream = new FileInputStream(propFileName);
 	      props.load(inputStream);
 	      inputStream.close();
 
